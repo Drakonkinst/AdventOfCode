@@ -7,7 +7,6 @@ def main():
     top2 = 0
     top3 = 0
     currSum = 0
-    index = 0
     for line in lines:
         if not line.strip():
             if currSum > top1:
@@ -21,9 +20,7 @@ def main():
             currSum = 0
         else:
             currSum += int(line)
-        index += 1
-    
-    print(top1, top2, top3, top1 + top2 + top3)
+    print(top1 + top2 + top3)
 
 if __name__ == "__main__":
     main()
