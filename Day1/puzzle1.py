@@ -1,6 +1,7 @@
 def main():
     file = open("input.txt", "r");
     lines = file.readlines()
+    lines.append("")
     
     maxSum = 0
     currSum = 0
