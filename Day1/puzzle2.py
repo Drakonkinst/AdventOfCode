@@ -10,6 +10,7 @@ def main():
     for line in lines:
         if not line.strip():
             if currSum > top1:
+                top3 = top2
                 top2 = top1
                 top1 = currSum
             elif currSum > top2:
