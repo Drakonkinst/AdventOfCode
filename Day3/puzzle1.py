@@ -2,14 +2,13 @@ s = "abcdefghijklmnopqrstuvwxyz" + ("abcdefghijklmnopqrstuvwxyz").upper()
 
 def main():
     file = open("input.txt", "r");
-    lines = file.readlines()
-    lines[-1] += "\n"
+    lines = [line.strip() for line in file.readlines()]
     
     total = 0
     for line in lines:
         mid = len(line.strip()) // 2
-        a = line[0:mid]
-        b = line[mid:-1]
+        a = line[:mid]
+        b = line[mid:]
         aChars = set()
         for aChar in a:
             aChars.add(aChar)

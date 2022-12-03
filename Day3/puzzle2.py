@@ -5,16 +5,15 @@ def main():
     
     total = 0
     while True:
-        a = file.readline()
-        b = file.readline()
-        c = file.readline()
+        a = file.readline().strip()
+        b = file.readline().strip()
+        c = file.readline().strip()
         if not c:
             break
         #print(a, b, c)
         onlyA = set()
         for aChar in a:
-            if aChar != '\n':
-                onlyA.add(aChar)
+            onlyA.add(aChar)
         aAndB = set()
         for bChar in b:
             if bChar in onlyA:
