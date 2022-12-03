@@ -23,8 +23,7 @@ def outcome(b):
         return 0
     if b == "Y":
         return 3
-    if b == "Z":
-        return 6
+    return 6
 
 def numPoints(a):
     if a == "X":
