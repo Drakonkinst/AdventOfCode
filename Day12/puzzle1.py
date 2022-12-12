@@ -25,17 +25,15 @@ def main():
             else:
                 row.append(elev.index(ch))
             x += 1
-        #print(row)
         y += 1
         grid.append(row)
-    print(len(grid), len(grid[0]))
-    print(S, E)
     
     # Breadth-first search
-    queue = [(S, 0)]
+    queue = []
     visited = set()
+    queue.add((S, 0))
     visited.add(S)
-    shortestPath = 99999999999999999999
+    shortestPath = None
     while len(queue) > 0:
         item = queue.pop(0)
         x = item[0][0]
@@ -43,10 +41,8 @@ def main():
         steps = item[1]
         val = grid[y][x]
         if x == E[0] and y == E[1]:
-            if steps < shortestPath:
-                print("FOUND ONE")
-                shortestPath = steps
-                break
+            shortestPath = steps
+            break
         
         # Up
         if y - 1 >= 0 and canMove(val, grid[y - 1][x]) and (x, y - 1) not in visited:
@@ -66,7 +62,6 @@ def main():
         if x + 1 < len(grid[0]) and canMove(val, grid[y][x + 1]) and (x + 1, y) not in visited:
             queue.append(((x + 1, y), steps + 1))
             visited.add((x + 1, y))
-        
     print(shortestPath)
     
 
