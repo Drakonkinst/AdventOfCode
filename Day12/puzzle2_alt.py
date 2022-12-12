@@ -4,20 +4,20 @@ def canMove(a, b):
     return b - a <= 1
 
 def main():
-    file = open("input.txt", "r");
+    file = open("input.txt", "r")
     lines = [line.strip() for line in file.readlines()]
     
     x = 0
     y = 0
     grid = []
-    S = None
+    S = []
     E = None
     for line in lines:
         row = []
         x = 0
         for ch in line:
-            if ch == "S":
-                S = (x, y)
+            if ch == "S" or ch == "a":
+                S.append((x, y))
                 row.append(elev.index("a"))
             elif ch == "E":
                 E = (x, y)
@@ -31,9 +31,11 @@ def main():
     # Breadth-first search
     queue = []
     visited = set()
-    queue.append((S, 0))
-    visited.add(S)
+    for s in S:
+        queue.append((s, 0))
+        visited.add(s)
     shortestPath = None
+    neighbors = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     while len(queue) > 0:
         item = queue.pop(0)
         x = item[0][0]
@@ -44,24 +46,17 @@ def main():
             shortestPath = steps
             break
         
-        # Up
-        if y - 1 >= 0 and canMove(val, grid[y - 1][x]) and (x, y - 1) not in visited:
-            queue.append(((x, y - 1), steps + 1))
-            visited.add((x, y - 1))
-        # Down
-        if y + 1 < len(grid) and canMove(val, grid[y + 1][x]) and (x, y + 1) not in visited:
-            queue.append(((x, y + 1), steps + 1))
-            visited.add((x, y + 1))
-        
-        # Left
-        if x - 1 >= 0 and canMove(val, grid[y][x - 1]) and (x - 1, y) not in visited:
-            queue.append(((x - 1, y), steps + 1))
-            visited.add((x - 1, y))
-        
-        # Right
-        if x + 1 < len(grid[0]) and canMove(val, grid[y][x + 1]) and (x + 1, y) not in visited:
-            queue.append(((x + 1, y), steps + 1))
-            visited.add((x + 1, y))
+        for n in neighbors:
+            newX = x + n[0]
+            newY = y + n[1]
+            if newX < 0 or newY < 0 or newX >= len(grid[0]) or newY >= len(grid):
+                continue
+            if (newX, newY) in visited:
+                continue
+            newVal = grid[newY][newX]
+            if (newVal - val) <= 1:
+                queue.append(((newX, newY), steps + 1))
+                visited.add((newX, newY))
     print(shortestPath)
     
 

@@ -34,6 +34,7 @@ def main():
     queue.append((S, 0))
     visited.add(S)
     shortestPath = None
+    neighbors = [(-1, 0), (1, 0), (0, -1), (0, 1)]
     while len(queue) > 0:
         item = queue.pop(0)
         x = item[0][0]
@@ -44,24 +45,7 @@ def main():
             shortestPath = steps
             break
         
-        # Up
-        if y - 1 >= 0 and canMove(val, grid[y - 1][x]) and (x, y - 1) not in visited:
-            queue.append(((x, y - 1), steps + 1))
-            visited.add((x, y - 1))
-        # Down
-        if y + 1 < len(grid) and canMove(val, grid[y + 1][x]) and (x, y + 1) not in visited:
-            queue.append(((x, y + 1), steps + 1))
-            visited.add((x, y + 1))
         
-        # Left
-        if x - 1 >= 0 and canMove(val, grid[y][x - 1]) and (x - 1, y) not in visited:
-            queue.append(((x - 1, y), steps + 1))
-            visited.add((x - 1, y))
-        
-        # Right
-        if x + 1 < len(grid[0]) and canMove(val, grid[y][x + 1]) and (x + 1, y) not in visited:
-            queue.append(((x + 1, y), steps + 1))
-            visited.add((x + 1, y))
     print(shortestPath)
     
 
