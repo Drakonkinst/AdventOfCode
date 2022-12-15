@@ -9,6 +9,9 @@ def main():
     lines = [line.strip() for line in file.readlines()]
     
     sensors = []
+    width = 4000000
+    every = 100000
+    
     for line in lines:
         words = line.split(" ")
         sX = int(words[2][2:-1])
@@ -17,8 +20,6 @@ def main():
         bY = int(words[9][2:])
         sensors.append((sX, sY, bX, bY))
             
-    width = 4000000
-    every = 100000
     for y in range(width + 1):
         #print("Y", y)
         intervals = []
