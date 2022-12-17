@@ -53,7 +53,7 @@ def findBottomMost(shape, relativeX):
 
 def findLeftMost(shape, relativeY):
     index = 0
-    while shape[relativeY][index] == 0:
+    while shape[getHeight(shape) - relativeY - 1][index] == 0:
         index += 1
         if index >= getWidth(shape):
             print("OOF 2")
@@ -62,7 +62,7 @@ def findLeftMost(shape, relativeY):
 
 def findRightMost(shape, relativeY):
     index = getWidth(shape) - 1
-    while shape[relativeY][index] == 0:
+    while shape[getHeight(shape) - relativeY - 1][index] == 0:
         index -= 1
         if index < 0:
             print("OOF")
@@ -84,20 +84,20 @@ def main():
     
     board = []
     n = 2022
-    shapeIndex = 0
     dirIndex = 0
     
-    stopAt = n
+    stopAt = n + 1
     
-    i = 1
-    while i <= n:
+    i = 0
+    while i < n:
         xPos = 2
         yPos = len(board) + 3
-        shape = shapes[shapeIndex]
+        shape = shapes[i % len(shapes)]
         width = getWidth(shape)
         height = getHeight(shape)
         done = False
         dirs = []
+        valids = []
         while not done:
             # Shift
             direction = directions[dirIndex]
@@ -112,16 +112,21 @@ def main():
                         break
                 if isValid:
                     xPos += 1
+                valids.append(xPos)
             elif direction == '<':
                 isValid = True
                 for relativeY in range(height):
                     x = xPos + findLeftMost(shape, relativeY)
                     y = yPos + relativeY
+                    if i + 1 == stopAt:
+                        print(relativeY, height, findLeftMost(shape, relativeY))
+                        print (x - 1, y, y >= len(board))
                     if getVal(board, x - 1, y) == 1:
                         isValid = False
                         break
                 if isValid:
                     xPos -= 1
+                valids.append(xPos)
             else:
                 print("oof")
                 return
@@ -157,17 +162,20 @@ def main():
                     board[yPos + yOffset][xPos + xOffset] = 1
         
         # Print board
-        if i == stopAt:
+        if i + 1 == stopAt:
+            print(i, xPos, yPos)
+            print("".join(dirs))
+            print("".join([str(x) for x in valids]))
             for s in shape:
-                print("".join(["#" if r == 1 else " " for r in s]))
+                print((" " * (xPos + 1)) + "".join(["@" if r == 1 else " " for r in s]))
+            print()
             for row in board[::-1]:
                 print("|" + "".join(["#" if r == 1 else "." for r in row]) + "|")
-            print(xPos, yPos, shapeIndex, len(board))
+            print("HEIGHT", len(board))
             
         # Increment
-        shapeIndex = (shapeIndex + 1) % len(shapes)
         i += 1
-    print(len(board))
+    print("FINAL", len(board))
     
 if __name__ == "__main__":
     main()
