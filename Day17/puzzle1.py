@@ -47,8 +47,7 @@ def findBottomMost(shape, relativeX):
     while shape[index][relativeX] == 0:
         index -= 1
         if index < 0:
-            print("OOF 3")
-            return -999
+            assert False
     return getHeight(shape) - 1 - index
 
 def findLeftMost(shape, relativeY):
@@ -56,8 +55,7 @@ def findLeftMost(shape, relativeY):
     while shape[getHeight(shape) - relativeY - 1][index] == 0:
         index += 1
         if index >= getWidth(shape):
-            print("OOF 2")
-            return -999
+            assert False
     return index
 
 def findRightMost(shape, relativeY):
@@ -65,8 +63,7 @@ def findRightMost(shape, relativeY):
     while shape[getHeight(shape) - relativeY - 1][index] == 0:
         index -= 1
         if index < 0:
-            print("OOF")
-            return -999
+            assert False
     return index
 
 def getVal(board, x, y):
@@ -118,9 +115,6 @@ def main():
                 for relativeY in range(height):
                     x = xPos + findLeftMost(shape, relativeY)
                     y = yPos + relativeY
-                    if i + 1 == stopAt:
-                        print(relativeY, height, findLeftMost(shape, relativeY))
-                        print (x - 1, y, y >= len(board))
                     if getVal(board, x - 1, y) == 1:
                         isValid = False
                         break
@@ -128,8 +122,7 @@ def main():
                     xPos -= 1
                 valids.append(xPos)
             else:
-                print("oof")
-                return
+                assert False
             
             # Check if can fall
             onGround = False
