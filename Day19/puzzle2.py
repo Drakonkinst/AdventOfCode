@@ -10,7 +10,6 @@ def main():
     totals = []
     for line in lines:
         if i >= 3:
-            pass
             break
         words = line.split(" ")
 
@@ -24,9 +23,7 @@ def main():
         
         q = deque()
         q.append((0, 1, 0, 0, 0, 0, 0, 0, 0, True, True, False, False))
-        bestPerStep = []
-        for _ in range(MAX_DEPTH):
-            bestPerStep.append(0)
+        bestPerStep = [0 for _ in range(MAX_DEPTH)]
         maxVal = 0
         
         n = 0
