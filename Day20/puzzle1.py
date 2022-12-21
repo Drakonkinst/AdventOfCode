@@ -55,17 +55,9 @@ def main():
         n1 = copy[(zeroIndex + 1000) % n][0]
         n2 = copy[(zeroIndex + 2000) % n][0]
         n3 = copy[(zeroIndex + 3000) % n][0]
-        # 1845 too low
+
         print([x[0] for x in copy])
         print(zeroIndex, n1, n2, n3, "TOTAL", n1 + n2 + n3)
-        #print(copy)
-        
-        original = copy
-        copy = []
-        lookup = {}
-        for i in range(n):
-            copy.append(original[i])
-            lookup[original[i]] = i
 
 if __name__ == "__main__":
     main()
