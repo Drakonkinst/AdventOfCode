@@ -28,3 +28,23 @@ def positive_floats(s):
     return lmap(float, re.findall(r"\d+(?:\.\d+)?", s))
 def words(s):
     return s.split(' ')
+    
+def addT(tuple1, tuple2):
+    return tuple([tup[0] + tup[1] for tup in zip(tuple1, tuple2)])
+def subT(tuple1, tuple2):
+    return tuple([tup[0] - tup[1] for tup in zip(tuple1, tuple2)])
+def multT(tuple1, tuple2):
+    return tuple([tup[0] * tup[1] for tup in zip(tuple1, tuple2)])
+def divT(tuple1, tuple2):
+    return tuple([tup[0] / tup[1] for tup in zip(tuple1, tuple2)])
+
+def arrow(ch):
+    if ch == '<':
+        return (-1, 0)
+    elif ch == '>':
+        return (1, 0)
+    elif ch == 'v':
+        return (0, 1)
+    elif ch == '^':
+        return (0, -1)
+    return (0, 0)

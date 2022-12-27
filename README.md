@@ -9,3 +9,9 @@ My commands:
 ```console
 cp -r Template YYYY/DayX && cd YYYY/DayX
 ```
+
+Or:
+
+```console
+.\create.sh YYYY X
+```

@@ -8,22 +8,14 @@ lines = [line.strip() for line in file.readlines()]
 
 def main():
     v = set()
-    x = 0
-    y = 0
-    v.add((x, y))
+    pos = (0, 0)
+    v.add(pos)
     n = 1
     for ch in lines[0]:
-        if ch == 'v':
-            y += 1
-        elif ch == '^':
-            y -= 1
-        elif ch == '>':
-            x += 1
-        elif ch == '<':
-            x -= 1
-        if (x, y) not in v:
+        pos = addT(pos, arrow(ch))
+        if pos not in v:
             n += 1
-        v.add((x, y))
+        v.add(pos)
     print(n)
 
 if __name__ == "__main__":
