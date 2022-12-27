@@ -6,6 +6,9 @@ from utils import *
 file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
+def is_hex(ch):
+    return ch in HEX_STR
+
 def main():
     a = 0
     b = 0

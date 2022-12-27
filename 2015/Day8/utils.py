@@ -3,6 +3,15 @@
 
 import re
 
+HEX_STR = "0123456789abcdef"
+LOWERCASE_STR = "abcdefghijklmnopqrstuvwxyz"
+UPPERCASE_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+UP = (0, -1)
+DOWN = (0, 1)
+LEFT = (-1, 0)
+RIGHT = (1, 0)
+
 def lmap(func, *iterables):
     return list(map(func, *iterables))
 
@@ -40,14 +49,11 @@ def divT(tuple1, tuple2):
 
 def arrow(ch):
     if ch == '<':
-        return (-1, 0)
+        return LEFT
     elif ch == '>':
-        return (1, 0)
+        return RIGHT
     elif ch == 'v':
-        return (0, 1)
+        return DOWN
     elif ch == '^':
-        return (0, -1)
+        return UP
     return (0, 0)
-
-def is_hex(ch):
-    return ch in "0123456789abcdef"
