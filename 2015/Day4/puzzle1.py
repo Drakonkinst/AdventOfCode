@@ -13,7 +13,7 @@ def main():
     while True:
         s = line + str(n)
         h = hashlib.md5(s.encode()).hexdigest()
-        if h[:5] == "00000":
+        if h.startswith("00000"):
             print(n)
             return
         n += 1

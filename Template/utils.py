@@ -6,10 +6,10 @@ import re
 def lmap(func, *iterables):
     return list(map(func, *iterables))
 
-def make_grid(*dimensions, fill=None):
+def make_grid(dimensions, fill=None):
     if len(dimensions) == 1:
         return [fill for _ in range(dimensions[0])]
-    next_grid = make_grid(*dimensions[1:], fill=fill)
+    next_grid = make_grid(dimensions[1:], fill=fill)
     return [list(next_grid) for _ in range(dimensions[0])]
 
 def find_bounds(arr):
