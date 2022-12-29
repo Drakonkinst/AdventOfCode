@@ -1,4 +1,6 @@
 #!/bin/bash
+# Probably want to re-code this into node or python at some point
+# Maybe pad the day numbers so Day6 -> Day06?
 set -x
 echo "Hi"
 if [[ $# -lt 2 ]]; then
