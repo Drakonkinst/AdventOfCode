@@ -1,17 +1,7 @@
 # Advent of Code
 
-<https://adventofcode.com/>
+<https://adventofcode.com>
+
+Still in the process of cleaning all this up, don't mind me.
 
 by Drakonkinst
-
-My commands:
-
-```console
-cp -r Template YYYY/DayX && cd YYYY/DayX
-```
-
-Or:
-
-```console
-.\create.sh YYYY X
-```
