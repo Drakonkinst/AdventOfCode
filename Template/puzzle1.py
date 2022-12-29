@@ -1,4 +1,4 @@
-import sys, os, re, itertools
+import sys, os, re, itertools as itt
 from collections import deque
 from sortedcontainers import SortedDict, SortedList
 from utils import *
