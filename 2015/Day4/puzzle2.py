@@ -8,15 +8,19 @@ file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
 def main():
-    n = 282749
-    line = lines[0]
+    num = 282749  # Start from answer of part 1
+    secretKey = lines[0]
     while True:
-        s = line + str(n)
-        h = hashlib.md5(s.encode()).hexdigest()
-        if h.startswith("000000"):
-            print(n)
+        # Calculate hash value
+        s = secretKey + str(num)
+        hashValue = md5(s)
+        
+        # Check prefix
+        hashStart = hashValue[:6]
+        if hashStart == "000000":
+            print(num)
             return
-        n += 1
+        num += 1
 
 if __name__ == "__main__":
     main()

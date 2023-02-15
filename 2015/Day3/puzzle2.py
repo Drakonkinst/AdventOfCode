@@ -7,25 +7,26 @@ file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
 def main():
-    v = set()
-    pos = (0, 0)
-    pos2 = (0, 0)
-    v.add(pos)
-    n = 1
-    turn = False
-    for ch in lines[0]:
+    moves = lines[0]
+    
+    santaPos = (0, 0)
+    robotPos = (0, 0)
+    v = set([santaPos, robotPos])
+    turn = True
+    for ch in moves:
+        offset = arrow(ch)
+        
+        # Move Santa or Robo-Santa depending on turn
         if turn:
-            pos = addT(pos, arrow(ch))
-            if pos not in v:
-                n += 1
-            v.add(pos)
+            santaPos = addT(santaPos, offset)
+            v.add(santaPos)
         else:
-            pos2 = addT(pos2, arrow(ch))
-            if pos2 not in v:
-                n += 1
-            v.add(pos2)
+            robotPos = addT(robotPos, offset)
+            v.add(robotPos)
         turn = not turn
-    print(n)
+        
+    # Presents delivered is equal to number of unique houses visited
+    print(len(v))
 
 if __name__ == "__main__":
     main()

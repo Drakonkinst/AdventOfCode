@@ -7,27 +7,35 @@ file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
 def main():
-    vow = set(["a", "e", "i", "o", "u"])
-    lt = set(["ab", "cd", "pq", "xy"])
+    vowels = set(["a", "e", "i", "o", "u"])
+    badPairs = set(["ab", "cd", "pq", "xy"])
     n = 0
     for line in lines:
-        nv = 0
-        ls = ""
-        lsFound = False
-        ltFound = False
+        numVowels = 0
+        lastChar = None
+        doubleFound = False
+        badPairFound = False
         for i in range(len(line)):
             ch = line[i]
-            if ch in vow:
-                nv += 1
-            if ls == ch:
-                lsFound = True
-            if i > 0:
-                lastTwo = line[i - 1:i + 1]
-                if lastTwo in lt:
-                    ltFound = True
+            
+            # Check if it is a vowel
+            if ch in vowels:
+                numVowels += 1
+            
+            # Check if it is a doubled character
+            if lastChar == ch:
+                doubleFound = True
+            
+            # Check if last two characters are a bad pair
+            if lastChar != None:
+                lastPair = lastChar + ch
+                if lastPair in badPairs:
+                    badPairFound = True
                     break
-            ls = ch
-        if lsFound and nv >= 3 and not ltFound:
+            lastChar = ch
+        
+        # Calculate result
+        if doubleFound and numVowels >= 3 and not badPairFound:
             n += 1
     print(n)
 

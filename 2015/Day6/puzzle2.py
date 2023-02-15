@@ -7,10 +7,13 @@ file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
 def main():
-    grid = make_grid((1000, 1000), 0)
+    width = 1000
+    height = 1000
+    grid = make_grid((width, height), 0)
     for line in lines:
         x1, y1, x2, y2 = ints(line)
-        op = -1
+        
+        # Determine operation through first words
         if line.startswith("turn off"):
             op = 0
         elif line.startswith("turn on"):
@@ -20,15 +23,25 @@ def main():
         else:
             assert False
         
+        # Perform operation across range
         for x in range(x1, x2 + 1):
             for y in range(y1, y2 + 1):
                 if op == 0:
+                    # Decrease by 1
                     grid[x][y] = max(0, grid[x][y] - 1)
                 if op == 1:
+                    # Increase by 1
                     grid[x][y] += 1
                 if op == 2:
+                    # Increase by 2
                     grid[x][y] += 2
-    print(sum(map(sum, grid)))
+    
+    # Count all lights 
+    n = 0
+    for x in range(width):
+        for y in range(height):
+            n += grid[x][y]
+    print(n)
 
 if __name__ == "__main__":
     main()

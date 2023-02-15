@@ -10,12 +10,15 @@ def main():
     n = 0
     for line in lines:
         dims = ints(line)
-        a, b, c = dims
-        sa = 2 * a * b + 2 * b * c + 2 * a * c
         
-        dims.sort()
-        ex = dims[0] * dims[1]
-        n += sa + ex
+        # Calculate surface area
+        l, w, h = dims
+        surfaceArea = 2*l*w + 2*w*h + 2*l*h
+        
+        # Find the area of the smallest side
+        dims.sort()  # Move longest dimension to the end
+        smallestArea = dims[0] * dims[1]
+        n += surfaceArea + smallestArea
     print(n)
 
 if __name__ == "__main__":

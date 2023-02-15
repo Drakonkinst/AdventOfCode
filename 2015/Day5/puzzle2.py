@@ -9,20 +9,27 @@ lines = [line.strip() for line in file.readlines()]
 def main():
     n = 0
     for line in lines:
-        a = False
-        b = False
+        doublePairFound = False
+        xyxFound = False
         pairs = {}
         for i in range(len(line)):
             ch = line[i]
+            
+            # Check for double pair
             if i >= 1:
-                lastTwo = line[i - 1] + ch
-                if lastTwo in pairs and pairs[lastTwo] < i - 1:
-                    a = True
-                pairs[lastTwo] = i
+                lastPair = line[i - 1] + ch
+                # If pair is already found and does not overlap
+                if lastPair in pairs and pairs[lastPair] < i - 1:
+                    doublePairFound = True
+                pairs[lastPair] = i
+            
+            # Check for xyx pattern
             if i >= 2:
-                if line[i - 2] == line[i]:
-                    b = True
-        if a and b:
+                # y value does not matter
+                if line[i - 2] == ch:
+                    xyxFound = True
+            lastChar = ch
+        if doublePairFound and xyxFound:
             n += 1
     print(n)
 

@@ -7,16 +7,18 @@ file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
 def main():
-    v = set()
+    moves = lines[0]
+    
+    # Keep track of all visited locations
     pos = (0, 0)
-    v.add(pos)
-    n = 1
-    for ch in lines[0]:
-        pos = addT(pos, arrow(ch))
-        if pos not in v:
-            n += 1
+    v = set([pos])
+    for ch in moves:
+        offset = arrow(ch)
+        pos = addT(pos, offset)
         v.add(pos)
-    print(n)
+    
+    # Presents delivered is equal to number of unique houses visited
+    print(len(v))
 
 if __name__ == "__main__":
     main()
