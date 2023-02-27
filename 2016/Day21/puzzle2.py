@@ -52,6 +52,10 @@ def reverse(s, start, end):
 
 def calc_rotate_based(s, ch):
     # It must be SOME rotation of s, so let's try them all
+    # This is not an injective function, and the result is
+    # (probably) the last one we encounter if shifting forward
+    # So let's shift backward instead and return the first result
+    # (Might not work for all cases)
     targetStr = "".join(s)
     for i in range(len(targetStr)):
         #print("TEST", "".join(s))
