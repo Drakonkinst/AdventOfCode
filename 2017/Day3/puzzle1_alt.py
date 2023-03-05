@@ -22,13 +22,10 @@ def main():
     ring = 0
     currDirectionIndex = 3
     distanceAlongEdge = 0
-    spiral = {}
-    spiral[(x, y)] = 1
     
     while currValue < target:
         ringWidth = 2 * ring + 1
         edgeDistance = ringWidth - 2
-        spiral[(x, y)] = currValue
         hasMoved = False
         
         if distanceAlongEdge >= edgeDistance:
