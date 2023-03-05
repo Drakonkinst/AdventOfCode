@@ -18,9 +18,6 @@ def main():
         i += 2
         
     ring = i // 2 + 1
-    if ring == 0:
-        print(0)
-        return
         
     # Calculate bounds
     corners = [(1, -1), (-1, -1), (-1, 1), (1, 1)]
