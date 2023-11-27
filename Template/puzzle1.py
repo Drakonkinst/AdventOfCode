@@ -7,10 +7,10 @@ file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
 def main():
-    l = 0
+    total = 0
     for line in lines:
-        l += 1
-    print(l)
+        total += 1
+    print(total)
 
 if __name__ == "__main__":
     main()
