@@ -3,9 +3,10 @@
 
 import re, json, hashlib
 
-HEX_STR = "0123456789abcdef"
-LOWERCASE_STR = "abcdefghijklmnopqrstuvwxyz"
-UPPERCASE_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+DIGITS = "0123456789"
+HEX = "0123456789abcdef"
+LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
+UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 UP = (0, -1)
 DOWN = (0, 1)
@@ -76,3 +77,34 @@ def parseJSON(j):
 # Returns MD5 hash of a string
 def md5(s):
     return hashlib.md5(s.encode()).hexdigest()
+
+def grouped(iterable, n):
+    return zip(*[iter(iterable)]*n)
+
+# To get the bottom N, just invert the value?
+class TopN:
+    def __init__(self, size, defaultValue = 0, get_value = lambda x : x):
+        self.data = [defaultValue for i in range(size)]
+        self.get_value = get_value
+    
+    def add(self, item):
+        value = self.get_value(item)
+        if value < self.get_value(self.data[-1]):
+            return
+        i = 0
+        insertIndex = -1
+        while i < len(self.data):
+            if value > self.get_value(self.data[i]):
+                insertIndex = i
+                break
+            i += 1
+            
+        if insertIndex < 0:
+            return
+
+        j = i
+        while j < len(self.data) - 1:
+            self.data[j + 1] = self.data[j]
+            j += 1
+        self.data[i] = item
+        

@@ -3,9 +3,10 @@
 
 import re, json, hashlib
 
-HEX_STR = "0123456789abcdef"
-LOWERCASE_STR = "abcdefghijklmnopqrstuvwxyz"
-UPPERCASE_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+DIGITS = "0123456789"
+HEX = "0123456789abcdef"
+LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
+UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 UP = (0, -1)
 DOWN = (0, 1)
