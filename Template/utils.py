@@ -1,7 +1,7 @@
 # Utils inspired by MCPower's utility library
 # https://github.com/mcpower/adventofcode/
 
-import re, json, hashlib
+import re, math, json, hashlib
 
 DIGITS = "0123456789"
 HEX = "0123456789abcdef"
@@ -31,6 +31,24 @@ def make_grid(dimensions, fill=None):
 
 def find_bounds(arr):
     return min(arr), max(arr)
+    
+def min_index(arr):
+    minIndex = -1
+    minValue = math.inf
+    for i in range(len(arr)):
+        if arr[i] < minValue:
+            minValue = arr[i]
+            minIndex = i
+    return (minIndex, minValue)
+
+def max_index(arr):
+    maxIndex = -1
+    maxValue = -math.inf
+    for i in range(len(arr)):
+        if arr[i] > maxValue:
+            maxValue = arr[i]
+            maxIndex = i
+    return (maxIndex, maxValue)
 
 def clamp(value, lo, hi):
     return min(max(value, lo), hi)

@@ -1,11 +1,12 @@
 # Utils inspired by MCPower's utility library
 # https://github.com/mcpower/adventofcode/
 
-import re, json, hashlib
+import re, math, json, hashlib
 
-HEX_STR = "0123456789abcdef"
-LOWERCASE_STR = "abcdefghijklmnopqrstuvwxyz"
-UPPERCASE_STR = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+DIGITS = "0123456789"
+HEX = "0123456789abcdef"
+LOWERCASE = "abcdefghijklmnopqrstuvwxyz"
+UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 UP = (0, -1)
 DOWN = (0, 1)
@@ -30,6 +31,24 @@ def make_grid(dimensions, fill=None):
 
 def find_bounds(arr):
     return min(arr), max(arr)
+    
+def min_index(arr):
+    minIndex = -1
+    minValue = math.inf
+    for i in range(len(arr)):
+        if arr[i] < minValue:
+            minValue = arr[i]
+            minIndex = i
+    return (minIndex, minValue)
+
+def max_index(arr):
+    maxIndex = -1
+    maxValue = -math.inf
+    for i in range(len(arr)):
+        if arr[i] > maxValue:
+            maxValue = arr[i]
+            maxIndex = i
+    return (maxIndex, maxValue)
 
 def clamp(value, lo, hi):
     return min(max(value, lo), hi)
@@ -76,3 +95,34 @@ def parseJSON(j):
 # Returns MD5 hash of a string
 def md5(s):
     return hashlib.md5(s.encode()).hexdigest()
+
+def grouped(iterable, n):
+    return zip(*[iter(iterable)]*n)
+
+# To get the bottom N, just invert the value?
+class TopN:
+    def __init__(self, size, defaultValue = 0, get_value = lambda x : x):
+        self.data = [defaultValue for i in range(size)]
+        self.get_value = get_value
+    
+    def add(self, item):
+        value = self.get_value(item)
+        if value < self.get_value(self.data[-1]):
+            return
+        i = 0
+        insertIndex = -1
+        while i < len(self.data):
+            if value > self.get_value(self.data[i]):
+                insertIndex = i
+                break
+            i += 1
+            
+        if insertIndex < 0:
+            return
+
+        j = i
+        while j < len(self.data) - 1:
+            self.data[j + 1] = self.data[j]
+            j += 1
+        self.data[i] = item
+        
