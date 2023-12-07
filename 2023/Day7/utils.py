@@ -103,7 +103,6 @@ def grouped(iterable, n):
     
 # Counts a list's elements by frequency using Counter
 # returns them sorted as [(item1, frequency1), (item2, frequency2)]
-# Works on strings without needing to convert them to a char array
 def get_most_common(arr):
     return Counter(arr).most_common()
 
