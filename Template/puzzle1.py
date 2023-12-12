@@ -2,6 +2,7 @@ import sys, os, itertools as itt
 from collections import deque
 from sortedcontainers import SortedDict, SortedList
 from utils import *
+from functools import cache
 
 file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
