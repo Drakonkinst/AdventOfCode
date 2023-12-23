@@ -1,5 +1,6 @@
 import sys, os, itertools as itt
-from collections import deque
+from collections import deque # append(), pop(), popleft()
+from queue import PriorityQueue # put(), get()
 from sortedcontainers import SortedDict, SortedList
 from utils import *
 from functools import cache
