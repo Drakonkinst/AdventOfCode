@@ -4,12 +4,12 @@ from sortedcontainers import SortedDict, SortedList
 from utils import *
 from functools import cache
 
+# Using approach from Reddit to deriving a polynomial from 3 specific points
+
 file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 grid = lines
-numRows = len(grid)
-numCols = len(grid[0])
-allVisited = set()
+
 
 def find_in_grid(grid, ch):
     for row in range(len(grid)):
@@ -26,27 +26,11 @@ def get(row, col):
 def modulo(row, col):
     return (row % len(grid), col % len(grid[0]))
 
-def in_bounds(row, col, grid):
-    return 0 <= row < len(grid) and 0 <= col < len(grid[0])
-
-cache = {}
-
-def calc(stepsSoFar, maxSteps, startRow, startCol):
-    cacheKey = (stepsSoFar % 2 == 0, startRow, startCol)
-    if cacheKey in cache:
-        print("CACHE HIT")
-        stepsRequired, minStepsToEdges, count = cache[cacheKey]
-        if maxSteps >= stepsRequired:
-            return minStepsToEdges, count, []
-    
+def get_steps_for_max(maxSteps, startRow, startCol):
     q = deque()
     q.append((0, startRow, startCol))
     visited = set()
     canReach = set()
-    
-    minStepsToEdges = {k: math.inf for k in CARDINAL_NEIGHBORS}
-    
-    maxStepForCell = 0
     while q:
         (step, row, col) = q.popleft()
         key = (row, col)
@@ -54,8 +38,7 @@ def calc(stepsSoFar, maxSteps, startRow, startCol):
             continue
         visited.add(key)
         
-        maxStepForCell = max(maxStepForCell, step)
-        if (stepsSoFar + step) % 2 == maxSteps % 2:
+        if step % 2 == maxSteps % 2:
             canReach.add((row, col))
         
         if step >= maxSteps:
@@ -64,53 +47,40 @@ def calc(stepsSoFar, maxSteps, startRow, startCol):
         for (offsetCol, offsetRow) in CARDINAL_NEIGHBORS:
             nextRow = row + offsetRow
             nextCol = col + offsetCol
-            if not in_bounds(nextRow, nextCol, grid):
-                minStepsToEdges[(offsetCol, offsetRow)] = min(minStepsToEdges[(offsetCol, offsetRow)], step + 1)
-                continue
-            if grid[nextRow][nextCol] == "#":
+            if get(nextRow, nextCol) == "#":
                 continue
             q.append((step + 1, nextRow, nextCol))
-    
-    if all(not math.isinf(x) for x in minStepsToEdges.values()):
-        cache[cacheKey] = (max(minStepsToEdges.values()), minStepsToEdges, len(canReach))
-    
-    return minStepsToEdges, len(canReach), canReach
+    return len(canReach)
 
 def main():
     grid = lines
+    # It's a square
+    assert len(grid) == len(grid[0])
+    size = len(grid)
+    offset = size // 2
+    
     startRow, startCol = find_in_grid(grid, "S")
+    # These values work because for the puzzle, target % size = size // 2
+    x = [offset, size + offset, size * 2 + offset]
+    y = [get_steps_for_max(maxSteps, startRow, startCol) for maxSteps in x]
+    # print(x)
+    # print(y)
     
-    maxSteps = 10
+    # Determine polynomials from 3 points
+    # Padded with 0 to match the formula
+    # y1 = a * x1^2 + b * x1 + c
+    # y2 = a * x2^2 + b * x2 + c
+    # y3 = a * x3^3 + b * x3 + c
     
-    #print(calc(0, 1, 10, 5))
-    #return
+    # https://math.stackexchange.com/questions/680646/get-polynomial-function-from-3-points
+    # Can simplify by scaling down the differences between x values, and scaling the target value accordingly
+    a = (y[2] - (2 * y[1]) + y[0]) // 2
+    b = y[1] - y[0] - a
+    c = y[0]
     
-    q = deque()
-    q.append((0, maxSteps, 0, 0, startRow, startCol))
-    v = set()
-    total = 0
-    while q:
-        stepsSoFar, stepsRemaining, cellX, cellY, row, col = q.popleft()
-        if stepsRemaining <= 0:
-            continue
-        if (cellX, cellY) in v:
-            continue
-        v.add((cellX, cellY))
-        minStepsToEdges, stepsInCell, canReach = calc(stepsSoFar, stepsRemaining, row, col)
-        for (r, c) in canReach:
-            allVisited.add((cellY * numRows + r, cellX * numCols + c))
-        #if stepsInCell >= maxForAnyCell:
-        print((stepsSoFar, stepsRemaining, cellX, cellY, row, col), "->", stepsInCell, minStepsToEdges)
-        total += stepsInCell
-        for edge in minStepsToEdges:
-            if not math.isinf(minStepsToEdges[edge]):
-                nextStartRow = (-edge[1] + 1) * (numRows // 2)
-                nextStartCol = (-edge[0] + 1) * (numCols // 2)
-                q.append((stepsSoFar + minStepsToEdges[edge], stepsRemaining - minStepsToEdges[edge], cellX + edge[0], cellY + edge[1], nextStartRow, nextStartCol))
-    print(total)
-    l = list(allVisited)
-    l.sort()
-    print(l)
-    
+    n = (26501365 - offset) // size
+    result = (a * n**2) + (b * n) + c
+    print(result)
+        
 if __name__ == "__main__":
     main()

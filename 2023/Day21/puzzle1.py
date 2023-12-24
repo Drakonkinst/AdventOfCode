@@ -39,15 +39,15 @@ def main():
     q.append((0, startRow, startCol))
     visited = set()
     
-    maxSteps = 10
+    maxSteps = 64
     while q:
         (step, row, col) = q.popleft()
-        key = (step % 2 == 0, row, col)
+        key = (row, col)
         if key in visited:
             continue
         visited.add(key)
         
-        if step % 2 == 0:
+        if step % 2 == maxSteps % 2:
             canReach.add((row, col))
         
         if step >= maxSteps:
@@ -58,12 +58,12 @@ def main():
             nextCol = col + offsetCol
             if not (0 <= nextRow < numRows and 0 <= nextCol < numCols):
                 continue
-            if grid[nextRow][nextCol] != ".":
+            if grid[nextRow][nextCol] == "#":
                 continue
             
             q.append((step + 1, nextRow, nextCol))
     
-    print_grid(grid, get_char)
+    #print_grid(grid, get_char)
     print(len(canReach))
     
 if __name__ == "__main__":
