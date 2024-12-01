@@ -31,14 +31,14 @@ def make_grid(dimensions, fill=None):
     next_grid = make_grid(dimensions[1:], fill=fill)
     return [list(next_grid) for _ in range(dimensions[0])]
 
-def in_bounds(pos, sizeY, sizeX):
-    return 0 <= pos[0] < sizeY and 0 <= pos[1] < sizeX
-
 # Returns a copy of a grid rotated 90 degrees clockwise
 def rot_90(l):
     # String version
     # return ["".join(list(reversed(x))) for x in zip(*l)]
     return [list(reversed(x)) for x in zip(*l)]
+    
+def in_bounds(pos, sizeY, sizeX):
+    return 0 <= pos[0] < sizeY and 0 <= pos[1] < sizeX
 
 def find_bounds(arr):
     return min(arr), max(arr)

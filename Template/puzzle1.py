@@ -4,6 +4,7 @@ from queue import PriorityQueue # put(), get()
 from sortedcontainers import SortedDict, SortedList
 from utils import *
 from functools import cache
+sys.setrecursionlimit(10000)
 
 file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
