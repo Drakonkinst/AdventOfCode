@@ -42,7 +42,7 @@ def rot_90(l):
 
 def find_bounds(arr):
     return min(arr), max(arr)
-
+    
 def min_index(arr):
     minIndex = -1
     minValue = math.inf
@@ -120,7 +120,7 @@ def md5(s):
 # grouped([1, 2, 3, 4], 2) -> [(1, 2), (3, 4)]
 def grouped(iterable, n):
     return zip(*[iter(iterable)]*n)
-
+    
 # Counts a list's elements by frequency using Counter
 # returns them sorted as [(item1, frequency1), (item2, frequency2)]
 # Works on strings without needing to convert them to a char array
@@ -137,7 +137,7 @@ class TopN:
     def __init__(self, size, defaultValue = 0, get_value = lambda x : x):
         self.data = [defaultValue for i in range(size)]
         self.get_value = get_value
-
+    
     def add(self, item):
         value = self.get_value(item)
         if value < self.get_value(self.data[-1]):
@@ -149,7 +149,7 @@ class TopN:
                 insertIndex = i
                 break
             i += 1
-
+            
         if insertIndex < 0:
             return
 
@@ -158,3 +158,4 @@ class TopN:
             self.data[j + 1] = self.data[j]
             j += 1
         self.data[i] = item
+        
