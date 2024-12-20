@@ -9,6 +9,9 @@ sys.setrecursionlimit(10000)
 file = open("input.txt", "r")
 lines = [line.strip() for line in file.readlines()]
 
+MOVE_DIRECTIONS = [(0, -1), (-1, 0), (0, 1), (1, 0)]
+LOOK_DIRECTIONS = [(1, 0), (0, -1), (-1, 0), (0, 1)]
+
 def main():
     regions = []
     visited = set()
@@ -22,9 +25,9 @@ def main():
     for region in regions:
         region_id, plots = region
         area = len(plots)
-        num_edges = get_num_edges(plots)
-        print(region_id, "has", num_edges, "edges and area of", area, "for price of", area * num_edges)
-        total += area * num_edges
+        edges = gather_edge_cells(plots)
+        num_sides = get_num_sides(edges, plots)
+        total += area * num_sides
     print(total)
 
 def calculate_region(grid, start_pos, regions, visited):
@@ -38,7 +41,8 @@ def calculate_region(grid, start_pos, regions, visited):
             continue
         visited.add(pos)
         plots.append(pos)
-        for offset in CARDINAL_NEIGHBORS:
+        for index in range(len(LOOK_DIRECTIONS)):
+            offset = LOOK_DIRECTIONS[index]
             neighbor_pos = addT(pos, offset)
             if not in_bounds(neighbor_pos, len(grid), len(grid[0])):
                 continue
@@ -47,21 +51,17 @@ def calculate_region(grid, start_pos, regions, visited):
                 q.append(neighbor_pos)
     regions.append((region_id, plots))
 
-MOVE_DIRECTIONS = [(0, -1), (-1, 0), (0, 1), (1, 0)]
-LOOK_DIRECTIONS = [(1, 0), (0, -1), (-1, 0), (0, 1)]
-def get_edge_plots(region):
-    edge_plots = set()
+def gather_edge_cells(region):
+    edges = set()
     for plot in region:
-        for direction in range(len(MOVE_DIRECTIONS)):
-            offset = MOVE_DIRECTIONS[direction]
+        for index in range(len(LOOK_DIRECTIONS)):
+            offset = LOOK_DIRECTIONS[index]
             next_plot = addT(plot, offset)
             if next_plot not in region:
-                edge_plots.add((plot, direction))
-    print("Found", len(edge_plots), "edge plots")
-    return edge_plots
+                edges.add((plot, index))
+    return edges
 
-def find_edges(region, starting_plot, starting_direction, plots_to_search):
-    print("Starting from", starting_plot, starting_direction)
+def find_edges(plots, starting_plot, starting_direction, visited_plots):
     plot = starting_plot
     direction = starting_direction
     moving_forward = True
@@ -70,46 +70,39 @@ def find_edges(region, starting_plot, starting_direction, plots_to_search):
     while not (plot == starting_plot and direction == starting_direction and num_edges > 1):
         move_direction = MOVE_DIRECTIONS[direction]
         look_direction = LOOK_DIRECTIONS[direction]
-        print(plot, move_direction, look_direction, moving_forward)
         # Move in direction until you cannot
         if moving_forward:
             move_plot = addT(plot, move_direction)
-            if move_plot in region:
-                print("Step")
+            if move_plot in plots:
                 plot = move_plot
                 look_plot = addT(plot, look_direction)
-                if look_plot in region:
+                if look_plot in plots:
                     moving_forward = False
             else:
                 moving_forward = False
         else:
             num_edges += 1
             look_plot = addT(plot, look_direction)
-            if look_plot in region:
+            if look_plot in plots:
                 # Concave, turn counterclockwise
                 direction = (direction + len(LOOK_DIRECTIONS) - 1) % len(LOOK_DIRECTIONS)
-                print("Turn counterclockwise")
             else:
                 # Convex, turn clockwise
                 direction = (direction + 1) % len(LOOK_DIRECTIONS)
-                print("Turn clockwise")
             moving_forward = True
         next_key = (plot, direction)
-        if next_key in plots_to_search:
-            print("Removing", next_key)
-            plots_to_search.remove(next_key)
+        visited_plots.add(next_key)
     return num_edges
 
-def get_num_edges(region):
-    plots_to_search = get_edge_plots(region)
-    num_edges = 0
-    for starting_plot in region:
-        for starting_direction in range(len(MOVE_DIRECTIONS)):
-            key = (starting_plot, starting_direction)
-            if key not in plots_to_search:
-                continue
-            plots_to_search.remove(key)
-            num_edges += find_edges(region, starting_plot, starting_direction, plots_to_search)
-    return num_edges
+def get_num_sides(edges, plots):
+    visited_edges = set()
+    total = 0
+    for edge in edges:
+        if edge in visited_edges:
+            continue
+        starting_plot, starting_direction = edge
+        total += find_edges(plots, starting_plot, starting_direction, visited_edges)
+    return total
+
 if __name__ == "__main__":
     main()
