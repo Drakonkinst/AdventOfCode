@@ -27,8 +27,6 @@ def main():
             solution_a, solution_b = solution
             cost = get_cost(solution_a, solution_b)
             total += cost
-    # 74609225581053 is too high
-    assert total < 74609225581053
     print(total)
 
 def get_cost(a, b):
