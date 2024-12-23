@@ -19,24 +19,30 @@ def main():
         start_x, start_y, velocity_x, velocity_y = ints(line)
         bots.append((start_x, start_y, velocity_x, velocity_y))
 
-    i = 0
+    # Look for contiguous bots in a row which form some base of the tree
+    time = 0
     while True:
-        positions = get_positions(bots, i)
-        i += 1
-        quadrants = [0, 0, 0, 0]
-        for position in positions:
-            quadrant = get_quadrant(position[0], position[1])
-            quadrants[quadrant] += 1
-        if i % 1000 == 0:
-            print("Searching", i)
-        if not (quadrants[0] == quadrants[1] and quadrants[2] == quadrants[3]):
-            continue
-        print("PASS")
+        positions = get_positions(bots, time)
         grid = create_grid(positions)
+        contiguous = search_contiguous_positions(grid)
+        if (contiguous):
+            print_grid(grid)
+            print(time)
+            return
+        time += 1
 
-        # if is_symmetric(grid):
-        print_grid(positions)
-        print(i, quadrants)
+min_contiguous_streak = 10
+def search_contiguous_positions(grid):
+    for row in grid:
+        contiguous_streak = 0
+        for ch in row:
+            if ch == '#':
+                contiguous_streak += 1
+            else:
+                contiguous_streak = 0
+            if contiguous_streak >= min_contiguous_streak:
+                return True
+    return False
 
 def get_positions(bots, time_elapsed):
     positions = set()
@@ -56,21 +62,12 @@ def create_grid(positions):
                 row.append('.')
         grid.append(row)
     return grid
-def print_grid(positions):
-    grid = create_grid(positions)
+
+def print_grid(grid):
     s = ""
     for row in grid:
         s += "".join(row) + "\n"
     print(s)
-
-def is_symmetric(grid):
-    for row in grid:
-        for i in range(len(row) // 2):
-            start_index = i
-            end_index = len(row) - i - 1
-            if row[start_index] != row[end_index]:
-                return False
-    return True
 
 def calculate(start_x, start_y, velocity_x, velocity_y, time_elapsed):
     unbounded_x = start_x + velocity_x * time_elapsed
@@ -82,18 +79,6 @@ def calculate(start_x, start_y, velocity_x, velocity_y, time_elapsed):
     if end_y < 0:
         end_y += HEIGHT
     return end_x, end_y
-
-def get_quadrant(end_x, end_y):
-    middle_width = WIDTH // 2
-    middle_height = HEIGHT // 2
-    if end_x == middle_width or end_y == middle_height:
-        return -1
-    quadrant_x = 0 if end_x < middle_width else 1
-    quadrant_y = 0 if end_y < middle_height else 1
-    return encode_quadrant(quadrant_x, quadrant_y)
-
-def encode_quadrant(quadrant_x, quadrant_y):
-    return quadrant_y * 2 + quadrant_x
 
 if __name__ == "__main__":
     main()
